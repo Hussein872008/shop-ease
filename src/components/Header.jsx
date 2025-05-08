@@ -62,20 +62,22 @@ const Header = () => {
     return () => unsubscribe();
   }, []);
 
-  // في دالة handleSearch
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const query = searchText.trim();
+const handleSearch = async (e) => {
+  e.preventDefault();
+  const query = searchText.trim();
 
-    // الانتقال إلى أعلى الصفحة أولاً
-    window.scrollTo(0, 0);
-
-    if (query) {
-      navigate(`/?search=${query}#products-section`);
-    } else {
-      navigate('/#products-section');
+  if (query) {
+    navigate(`/?search=${query}`);
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const productsSection = document.getElementById('products-section');
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: 'smooth' });
     }
-  };
+  } else {
+    navigate('/');
+    window.scrollTo(0, 0);
+  }
+};
 
   const handleLogout = async () => {
     try {
